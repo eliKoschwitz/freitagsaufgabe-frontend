@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import axios from "axios";
+import Menu from "./components/DropDownMenu";
 
 type Todo= {
   id : string;
@@ -13,7 +14,9 @@ type postTodo= {
     status : string;
 };
 
+
 function App() {
+
     // get endpunkt
   const [todos, setTodos] = useState<Todo[]>([]);
   useEffect( () =>{
@@ -43,27 +46,43 @@ function App() {
         setNewTodo({ ...newTodo, [nameIsDescription] : value} ) // computed property's
     }
 
-        // delete by ID endpunkt
+    // delete by ID endpunkt
     const [idToDelete, setIdToDelete] = useState<string>("");
     console.log("die Id die gelöscht werden soll" ,idToDelete)
     const submit2 = () => {
         (async () => {
-            const response = await axios.delete("/api/todo/"+ idToDelete);
-            const todosMap = todos.filter(todo => todo.id != idToDelete).map(todo => todo);
+            await axios.delete("/api/todo/"+ idToDelete);
+            const todosMap = todos.filter(todo => todo.id !== idToDelete).map(todo => todo);
             setTodos(todosMap);
-            console.log("hier ",todosMap);
         })();
+    }
 
-    }
-    console.log("Hier gibts die INFOOOO ",todos);
     const typeId = (event : React.ChangeEvent<HTMLInputElement>) => {
-        //const name = event.target.name;
+        const name = event.target.name;
         const value = event.target.value;
-        setIdToDelete(value);
+        if(name==="delete"){
+            setIdToDelete(value);
+        }
+        if(name === "put" ){
+            setIdToPut(value);
+        }
     }
+
+    // put by ID endpunkt
+    const [idToPut, setIdToPut] = useState<string>("");
+    const submit3 = () => {
+        (async () => {
+            const response = await axios.put("/api/todo/"+ idToPut);
+            console.log(response)
+            //setTodos(response);
+            //console.log("hier ",todosMap);
+        })();
+    }
+
 
   return (
-      <div >
+      <div>
+        <Menu/>
         <h1>todolist</h1>
         {todos.map(todo => <li key={todo.id}> {todo.description} <button onClick={()=>{ }}> Weiter </button></li> )}
 
@@ -76,6 +95,12 @@ function App() {
               <input type="text" name="delete" value={idToDelete} onChange={typeId}/>
               <button type={"reset"} onClick={()=>submit2()}> Delete By ID</button>
           </form>
+
+          <form onSubmit={submit3}  >
+              <input type="text" name="put" value={idToPut} onChange={typeId}/>
+
+          </form>
+
       </div>
   )
 }
