@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import Cards from './Cards';
 import './App.css';
 import axios from "axios";
 
-type Todo= {
+export type Todo= {
   id : string;
   description : string;
   status : string;
@@ -45,37 +46,42 @@ function App() {
 
         // delete by ID endpunkt
     const [idToDelete, setIdToDelete] = useState<string>("");
-    console.log("die Id die gelöscht werden soll" ,idToDelete)
     const submit2 = () => {
         (async () => {
-            const response = await axios.delete("/api/todo/"+ idToDelete);
-            const todosMap = todos.filter(todo => todo.id != idToDelete).map(todo => todo);
+            await axios.delete("/api/todo/"+ idToDelete);
+            const todosMap = todos.filter(todo => todo.id !== idToDelete).map(todo => todo);
             setTodos(todosMap);
             console.log("hier ",todosMap);
         })();
 
     }
-    console.log("Hier gibts die INFOOOO ",todos);
     const typeId = (event : React.ChangeEvent<HTMLInputElement>) => {
         //const name = event.target.name;
         const value = event.target.value;
         setIdToDelete(value);
     }
 
+    // put by ID endpunkt
+    const [idToPut, setIdToPut] = useState();
+    // den geänderten status will ich noch ins backend geben mit put
+    const [status, setStatus] = useState<string>("Done");
+
   return (
       <div >
-        <h1>todolist</h1>
-        {todos.map(todo => <li key={todo.id}> {todo.description} <button onClick={()=>{ }}> Weiter </button></li> )}
 
+          <Cards todos = {todos}   setStatus = {(status:string) => setStatus(status)}/>
+
+          <h1>hier der status {status}</h1>
           <form onSubmit={submit} >
               <input type="text" name="description" value={newTodo.description} onChange={changeDescription}/>
-              <button> description BESTÄTIGEN  </button>
+              <button> description  BESTÄTIGEN  </button>
           </form>
 
           <form onSubmit={submit2}  >
               <input type="text" name="delete" value={idToDelete} onChange={typeId}/>
-              <button type={"reset"} onClick={()=>submit2()}> Delete By ID</button>
+              <button type={"reset"}  onClick={()=>submit2()}> Delete By ID</button>
           </form>
+
       </div>
   )
 }
