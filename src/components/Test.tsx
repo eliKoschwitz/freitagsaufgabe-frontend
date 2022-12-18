@@ -1,11 +1,16 @@
 
 
-function Test(obj:{status :string}){
+function Test(props:{status:string, stateToPass:Function}){
 
     return(
         <div>
-            hier wird der status gegeben {obj.status}
+            hier wird der status gegeben {props.status}
+        <select>
+
+        </select>
+
         </div>
+
     )
 }
 

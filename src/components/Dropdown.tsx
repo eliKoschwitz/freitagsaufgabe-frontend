@@ -9,11 +9,9 @@ type DropDownProps = {
     citySelection: Function;
 };
 
-const DropDown: React.FC<DropDownProps> = ({
-                                               cities,
-                                               citySelection,
-                                           }: DropDownProps): JSX.Element => {
+const DropDown: React.FC<DropDownProps> = ({cities, citySelection,}: DropDownProps): JSX.Element => {
     const [showDropDown, setShowDropDown] = useState<boolean>(false);
+    const [stateToPass, setStateToPass] = useState<string>('state');
 
     /**
      * Handle passing the city name
@@ -32,20 +30,15 @@ const DropDown: React.FC<DropDownProps> = ({
     return (
         <>
             <div className={showDropDown ? 'dropdown' : 'dropdown active'}>
-                {cities.map(
-                    (city: string, index: number): JSX.Element => {
-                        return (
-                            <p
-                                key={index}
-                                onClick={(): void => {
-                                    onClickHandler(city);
-                                }}
-                            >
+                {cities.map((city: string, index: number): JSX.Element => {
+                        return (<p key={index} onClick={(): void => {onClickHandler(city);}}>
                                 {city}
-                                <Test status = {city}/>
-                            </p>
-                        );
-                    }
+                                <Test
+                                    status = {city}
+                                    stateToPass = {(stateToPass:string) => setStateToPass(stateToPass)}
+                                />
+                                </p>
+                                );}
                 )}
             </div>
         </>
