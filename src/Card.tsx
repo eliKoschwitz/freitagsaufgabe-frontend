@@ -1,8 +1,14 @@
 import {Todo} from "./App";
+import React from "react";
 
 function Card(obj:{key: string, todo: Todo, changeStatus:Function}){
 
-        return(
+    function onSelectChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        const value = event.target.value;
+        obj.todo.status = value;
+    }
+
+    return(
         <div>
             hier in cards
             <li>
@@ -10,15 +16,15 @@ function Card(obj:{key: string, todo: Todo, changeStatus:Function}){
                 <p>
                     {obj.todo.status}
                 </p>
-                <select name={"status"} id={"status"}>
-                    <option value="vw">ToDo</option>
-                    <option value="opel">In Progress</option>
-                    <option value="bla">Done</option>
+                <select name={"status"} id={"status"} onChange={onSelectChange}>
+                    <option value="Todo">ToDo</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Done">Done</option>
                 </select>
             </li>
 
 
-            <button onClick={() => obj.changeStatus("Done")} > Change auf todo  </button>
+            <button onClick={() => obj.changeStatus(obj.todo.status)} > Change auf todo  </button>
 
         </div>
     )

@@ -72,6 +72,7 @@ function App() {
           <Cards todos = {todos}   setStatus = {(status:string) => setStatus(status)}/>
 
           <h1>hier der status {status}</h1>
+
           <form onSubmit={submit} >
               <input type="text" name="description" value={newTodo.description} onChange={changeDescription}/>
               <button> description  BESTÄTIGEN  </button>
