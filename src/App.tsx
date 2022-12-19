@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Cards from './Cards';
 import './App.css';
 import axios from "axios";
+//import './card.css';
 
 export type Todo= {
   id : string;
@@ -13,6 +14,7 @@ type postTodo= {
     description : string;
     status : string;
 };
+
 
 function App() {
     // get endpunkt
@@ -60,27 +62,40 @@ function App() {
         const value = event.target.value;
         setIdToDelete(value);
     }
-
-    // put by ID endpunkt
-    const [idToPut, setIdToPut] = useState();
-    // den geänderten status will ich noch ins backend geben mit put
     const [status, setStatus] = useState<string>("Done");
 
+
+
+    // put by ID endpunkt
+    const putTodo= {
+        id : "",
+        description : "",
+        status : "",
+    };
+    const[objAfterPut, setObjAfterPut] = useState<Todo>(putTodo);
+    const setAfterPut = (objPut:Todo) => { setObjAfterPut(objPut)};
+
+    useEffect( () =>{
+        (async () => {
+            await axios.put("/api/todo/"+ objAfterPut.id, objAfterPut);
+        }) ()
+    }, [objAfterPut]); // wenn das putTodo sich ändert wird das backend verändert
+
   return (
-      <div >
+      <div className="" >
 
-          <Cards todos = {todos}   setStatus = {(status:string) => setStatus(status)}/>
+          <Cards todos = {todos}   setStatus = {(status:string) => setStatus(status)}   setObjekt = {(setAfterPut)}/>
 
-          <h1>hier der status {status}</h1>
+          <h1>Status in Main {objAfterPut.status} der Card {objAfterPut.id}</h1>
 
           <form onSubmit={submit} >
               <input type="text" name="description" value={newTodo.description} onChange={changeDescription}/>
-              <button> description  BESTÄTIGEN  </button>
+              <button> ADD  </button>
           </form>
 
           <form onSubmit={submit2}  >
               <input type="text" name="delete" value={idToDelete} onChange={typeId}/>
-              <button type={"reset"}  onClick={()=>submit2()}> Delete By ID</button>
+              <button type={"reset"}  onClick={()=>submit2()}> DELETE </button>
           </form>
 
       </div>

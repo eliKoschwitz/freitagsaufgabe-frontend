@@ -1,30 +1,40 @@
 import {Todo} from "./App";
 import React from "react";
+import './card.css';
 
-function Card(obj:{key: string, todo: Todo, changeStatus:Function}){
+/*
+<button onClick={() => obj.changeObj(obj.todo)} > Objekt an Main senden  </button>
+ */
+
+function Card(obj:{key: string, todo: Todo, changeStatus:Function, changeObj:Function}){
+
+    const backFunktion= () => {obj.changeObj(obj.todo)};
 
     function onSelectChange(event: React.ChangeEvent<HTMLSelectElement>) {
         const value = event.target.value;
         obj.todo.status = value;
+        console.log()
+        backFunktion();
     }
 
     return(
-        <div>
-            hier in cards
-            <li>
-                {obj.todo.description}
-                <p>
-                    {obj.todo.status}
+        <div className="card">
+            <li className="taskStatus">
+                <p className= "taskStatusText" >
+                    Aufgabe: {obj.todo.description}
                 </p>
-                <select name={"status"} id={"status"} onChange={onSelectChange}>
+
+                <p className= "taskStatusText" >
+                    Aufgabenstatus: {obj.todo.status}
+                </p>
+                <select className="dropdown" onChange={onSelectChange}>
                     <option value="Todo">ToDo</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Done">Done</option>
                 </select>
             </li>
 
-
-            <button onClick={() => obj.changeStatus(obj.todo.status)} > Change auf todo  </button>
+            <button onClick={() => obj.changeStatus(obj.todo.status)} > Change Status  </button>
 
         </div>
     )

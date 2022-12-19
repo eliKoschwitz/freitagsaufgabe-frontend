@@ -1,0 +1,27 @@
+.card{
+    display: flex;
+    width: 500px;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 9px;
+    background-color: #61dafb;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+    margin: 10px 10px 20px 10px;
+}
+
+.taskStatus{
+    width: 250px;
+    margin: 0 0 0 0;
+
+}
+
+.taskStatusText {
+    display: inline-block;
+    margin: 5px 0 10px 2px;
+}
+
+.dropdown {
+    margin: 0 0 5px 5px;
+    border-radius: 5px;
+}
