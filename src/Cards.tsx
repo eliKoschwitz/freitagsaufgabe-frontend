@@ -1,15 +1,6 @@
 import {Todo} from "./App";
 import Card from "./Card"
 import './cards.css';
-import {BrowserRouter, Routes} from "react-router-dom";
-
-/*
-<BrowserRouter>
-                <Routes>
-                    <Route path={"/"} element={<Root/>}/>
-                </Routes>
-            </BrowserRouter>
- */
 
 function Cards(props:{ todos : Todo[] , putId:Function, deleteId:Function}){
 
@@ -20,6 +11,7 @@ function Cards(props:{ todos : Todo[] , putId:Function, deleteId:Function}){
     return(
         <div>
             <h1 className="headLine">  Elias-Todolist</h1>
+
             <div className= "rows">
                 <div className="openTods">
                     <h2> Open </h2>

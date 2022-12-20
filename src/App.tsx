@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import Cards from './Cards';
 import './App.css';
 import axios from "axios";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import OpenTodos from "./OpenTodos";
+import Home from "./Home"
 
 export type Todo= {
   id : string;
@@ -62,9 +65,19 @@ function App() {
 
   return (
       <div >
+          <div>
+              <BrowserRouter>
+                  <Routes>
+                      <Route path ="/" element={<Home/>} />
+                      <Route path ="/OpenTodos" element={<OpenTodos/>}/>
+                  </Routes>
+              </BrowserRouter>
+          </div>
+
           <div >
               <Cards todos = {todos} putId= {putById} deleteId = {deleteByID} />
           </div>
+
 
           <form onSubmit={submit} >
               <input type="text" name="description" value={newTodo.description} onChange={changeDescription}/>
