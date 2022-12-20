@@ -46,21 +46,15 @@ function App() {
 
         // delete by ID endpunkt
     const [idToDelete, setIdToDelete] = useState<string>("");
-    const submit2 = () => {
+    console.log("Hier LÖSCHEN",idToDelete)
+    useEffect(() => {
         (async () => {
-            await axios.delete("/api/todo/"+ idToDelete);
-            const todosMap = todos.filter(todo => todo.id !== idToDelete).map(todo => todo);
+            await axios.delete("/api/todo/" + idToDelete);
+            const todosMap = todos.filter(todo => todo.id !== idToDelete).map(todo => todo); // map muss hier nicht
             setTodos(todosMap);
-            console.log("hier ",todosMap);
-        })();
+        }) ()
+        },[idToDelete]);
 
-    }
-    const typeId = (event : React.ChangeEvent<HTMLInputElement>) => {
-        //const name = event.target.name;
-        const value = event.target.value;
-        setIdToDelete(value);
-    }
-    const [status, setStatus] = useState<string>("Done");
 
     // put by ID endpunkt
     const putTodo= {
@@ -83,7 +77,7 @@ function App() {
   return (
       <div >
           <div >
-              <Cards todos = {todos}  setObjekt = {(setAfterPut)}/>
+              <Cards todos = {todos}  setObjekt = {(setAfterPut)}    deleteId = {(id:string) =>setIdToDelete(id)} />
           </div>
 
           <h1>Status in Main {objAfterPut.status} der Card {objAfterPut.id}</h1>
@@ -92,12 +86,6 @@ function App() {
               <input type="text" name="description" value={newTodo.description} onChange={changeDescription}/>
               <button type={"submit"}> ADD  </button>
           </form>
-
-          <form onSubmit={submit2}  >
-              <input type="text" name="delete" value={idToDelete} onChange={typeId}/>
-              <button type={"reset"}  onClick={()=>submit2()}> DELETE </button>
-          </form>
-
       </div>
   )
 }

@@ -3,7 +3,7 @@ import React from "react";
 import './card.css';
 
 
-function Card(obj:{key: string, todo: Todo, changeObj:Function}){
+function Card(obj:{key: string, todo: Todo, changeObj:Function, changeId:Function}){
 
     const backFunktion= () => {obj.changeObj(obj.todo)};
 
@@ -12,6 +12,11 @@ function Card(obj:{key: string, todo: Todo, changeObj:Function}){
         obj.todo.status = value;
         backFunktion();
     }
+
+    const deleteByID = () => {
+        obj.changeId(obj.todo.id);
+        console.log("diese Id soll durchgereicht werden",obj.todo.id);
+    };
 
     return(
         <div className="card">
@@ -28,7 +33,7 @@ function Card(obj:{key: string, todo: Todo, changeObj:Function}){
                     <option value="Done">Done</option>
                 </select>
             </li>
-
+            <button onClick={ () => deleteByID() }> löschen </button>
 
         </div>
     )
