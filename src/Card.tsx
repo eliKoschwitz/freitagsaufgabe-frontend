@@ -1,6 +1,7 @@
-import {Todo} from "./App";
+import {Todo} from "./Home";
 import React from "react";
 import './card.css';
+import {Link} from "react-router-dom";
 
 
 function Card(props:{key: string, todo: Todo, changeObj:Function, changeId:Function}){
@@ -20,9 +21,10 @@ function Card(props:{key: string, todo: Todo, changeObj:Function, changeId:Funct
 
     return(
         <div className="card">
+
             <li className="taskStatus">
                 <p className= "taskStatusText" >
-                    Aufgabe: {props.todo.description}
+                    Aufgabe: {props.todo.description}s
                 </p>
                 <p className= "taskStatusText" >
                     Aufgabenstatus: {props.todo.status}
