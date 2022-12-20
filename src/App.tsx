@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import Cards from './Cards';
 import './App.css';
 import axios from "axios";
-//import './card.css';
 
 export type Todo= {
   id : string;
@@ -14,7 +13,6 @@ type postTodo= {
     description : string;
     status : string;
 };
-
 
 function App() {
     // get endpunkt
@@ -29,7 +27,7 @@ function App() {
     // post endpunkt
     const initialTodo={
         description : "",
-        status : "OPEN"
+        status : "Open"
     }
 
     const [newTodo, setNewTodo] = useState<postTodo>(initialTodo);
@@ -64,33 +62,35 @@ function App() {
     }
     const [status, setStatus] = useState<string>("Done");
 
-
-
     // put by ID endpunkt
     const putTodo= {
         id : "",
-        description : "",
-        status : "",
+        description : "Das ist das Put ding",
+        status : "Open",
     };
     const[objAfterPut, setObjAfterPut] = useState<Todo>(putTodo);
     const setAfterPut = (objPut:Todo) => { setObjAfterPut(objPut)};
 
     useEffect( () =>{
         (async () => {
-            await axios.put("/api/todo/"+ objAfterPut.id, objAfterPut);
+            const response = await axios.put("/api/todo/"+ objAfterPut.id, objAfterPut);
+            const updatedTodo = todos.map(todo => todo.id === response.data.id? response.data : todo);//???
+            setTodos(updatedTodo);
         }) ()
-    }, [objAfterPut]); // wenn das putTodo sich ändert wird das backend verändert
+    }, [objAfterPut]); // das ObjAfterPut ist initial leer dann wird der putTodo rein geladen und der useeffect wird ausgeführt.
+
 
   return (
-      <div className="" >
-
-          <Cards todos = {todos}   setStatus = {(status:string) => setStatus(status)}   setObjekt = {(setAfterPut)}/>
+      <div >
+          <div >
+              <Cards todos = {todos}  setObjekt = {(setAfterPut)}/>
+          </div>
 
           <h1>Status in Main {objAfterPut.status} der Card {objAfterPut.id}</h1>
 
           <form onSubmit={submit} >
               <input type="text" name="description" value={newTodo.description} onChange={changeDescription}/>
-              <button> ADD  </button>
+              <button type={"submit"}> ADD  </button>
           </form>
 
           <form onSubmit={submit2}  >

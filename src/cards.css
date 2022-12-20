@@ -1,0 +1,20 @@
+.headLine{
+    display: block;
+}
+
+.rows{
+    display: flex;
+    justify-content: space-around;
+}
+
+.openTods{
+    width: 600px;
+}
+
+.inProgressTods{
+    width: 600px;
+}
+
+.done{
+    width: 600px;
+}
