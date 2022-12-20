@@ -44,43 +44,27 @@ function App() {
         setNewTodo({ ...newTodo, [nameIsDescription] : value} ) // computed property's
     }
 
-        // delete by ID endpunkt
-    const [idToDelete, setIdToDelete] = useState<string>("");
-    console.log("Hier LÖSCHEN",idToDelete)
-    useEffect(() => {
-        (async () => {
-            await axios.delete("/api/todo/" + idToDelete);
-            const todosMap = todos.filter(todo => todo.id !== idToDelete).map(todo => todo); // map muss hier nicht
-            setTodos(todosMap);
-        }) ()
-        },[idToDelete]);
-
+    // delete by ID endpunkt
+    const deleteByID = (idToDelete:string) => {
+        axios.delete("/api/todo/" + idToDelete);
+        const todosMap = todos.filter(todo => todo.id !== idToDelete).map(todo => todo); // map muss hier nicht
+        setTodos(todosMap);
+    };
 
     // put by ID endpunkt
-    const putTodo= {
-        id : "",
-        description : "Das ist das Put ding",
-        status : "Open",
-    };
-    const[objAfterPut, setObjAfterPut] = useState<Todo>(putTodo);
-    const setAfterPut = (objPut:Todo) => { setObjAfterPut(objPut)};
-
-    useEffect( () =>{
+    const putById = (objAfterPut:Todo) =>{
         (async () => {
-            const response = await axios.put("/api/todo/"+ objAfterPut.id, objAfterPut);
-            const updatedTodo = todos.map(todo => todo.id === response.data.id? response.data : todo);//???
-            setTodos(updatedTodo);
-        }) ()
-    }, [objAfterPut]); // das ObjAfterPut ist initial leer dann wird der putTodo rein geladen und der useeffect wird ausgeführt.
-
+        const response = await axios.put("/api/todo/"+ objAfterPut.id, objAfterPut);
+        const updatedTodo = todos.map(todo => todo.id === response.data.id? response.data : todo);
+        setTodos(updatedTodo);
+    }) ()
+    }
 
   return (
       <div >
           <div >
-              <Cards todos = {todos}  setObjekt = {(setAfterPut)}    deleteId = {(id:string) =>setIdToDelete(id)} />
+              <Cards todos = {todos} putId= {putById} deleteId = {deleteByID} />
           </div>
-
-          <h1>Status in Main {objAfterPut.status} der Card {objAfterPut.id}</h1>
 
           <form onSubmit={submit} >
               <input type="text" name="description" value={newTodo.description} onChange={changeDescription}/>
